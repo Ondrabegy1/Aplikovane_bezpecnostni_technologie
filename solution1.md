@@ -7,6 +7,10 @@ Select-Object TimeCreated, Id, LevelDisplayName, ProviderName, Message |
 Format-Table -AutoSize
 ```
 
+***Výsledkem bude vypsání všech zápisů systémových chyb za posledních 10 dní.***
+
+
+
 ___
 
 ### Proveďte konverzi hexadecimální hodnoty řetězce do ascii.
