@@ -26,6 +26,7 @@ tím se nám otevře soubor Microsoft.PowerShell_profile.ps1 v poznámkovém blo
 Write-Host "Aktuální execution policy: $(Get-ExecutionPolicy)" -ForegroundColor Yellow
 Write-Host "Cesta k profilu: $PROFILE" -ForegroundColor Green
 ```
+
 ***Nyní když ukončíme a znovu spustíme Powershell, vypíšeme se nám informace o aktuální "execution policy" žlutě a cesta k profilu zeleně.***
 
 ___

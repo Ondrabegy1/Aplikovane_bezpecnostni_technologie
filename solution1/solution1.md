@@ -1,6 +1,7 @@
 ### Vypište z logu System události typu "Chyba" z posledních 10 dní. Pokud v logu žádnou chybu nemáte, zkuste "Upozornění".
 
 Do powershellu zadáme příkaz:
+
 ```
 Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddDays(-10)} |
 Select-Object TimeCreated, Id, LevelDisplayName, ProviderName, Message |
@@ -18,10 +19,12 @@ ___
 *$s = "506f7765727368656c6c20697320617765736f6d6521"*
 
 Do powershellu zadáme příkaz:
+
 ```
 $s = "506f7765727368656c6c20697320617765736f6d6521"
 [System.Text.Encoding]::ASCII.GetString(([System.Convert]::FromHexString($s)))
 ```
+
 a výsledkem je:
 
 ***Powershell is awesome!***
