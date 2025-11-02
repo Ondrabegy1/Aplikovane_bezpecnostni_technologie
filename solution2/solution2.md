@@ -21,7 +21,7 @@ notepad $PROFILE
 tím se nám otevře soubor Microsoft.PowerShell_profile.ps1 v poznámkovém bloku. Do otevřeného souboru zadáme:
 
 ```
-# --- Zobrazení informací po startu ---
+#Zobrazení informací po startu
 
 Write-Host "Aktuální execution policy: $(Get-ExecutionPolicy)" -ForegroundColor Yellow
 Write-Host "Cesta k profilu: $PROFILE" -ForegroundColor Green
