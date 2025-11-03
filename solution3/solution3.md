@@ -50,20 +50,26 @@ Do powershellu zadáme příkaz:
 
 ```
 #Pomocí cmdlet
-Get-LocalUser | Where-Object { -not $_.LastLogon }
+Get-LocalUser | Where-Object { -not $_.LastLogon } |
+  Select-Object Name, Enabled, LastLogon
 
 #Pomocí CIM rozhraní
-Get-CimInstance -ClassName Win32_UserAccount | Where-Object { -not $_.LastLogon }
+Get-CimInstance -ClassName Win32_NetworkLoginProfile |
+    Where-Object { $_.LocalAccount -eq $true -and -not $_.LastLogon } |
+    Select-Object Name, Disabled, LastLogon
 ```
 
 pro získání seznamu nepoužitých účtů podle preferované varianty. Toho jsme dosáhli pomocí dotazu na účty, které nemají zápis pro vlastnost LastLogon (posledního přihlášení). Dále zadáme:
 
 ```
 #Pomocí cmdlet
-Get-LocalUser | Where-Object { $_.Enabled -eq $false }
+Get-LocalUser | Where-Object { $_.LockedOut -eq $true } |
+  Select-Object Name, Enabled, LockedOut
 
 #Pomocí CIM rozhraní
-Get-CimInstance -ClassName Win32_UserAccount | Where-Object { $_.Disabled -eq $true }
+Get-CimInstance -ClassName Win32_UserAccount |
+    Where-Object { $_.LocalAccount -eq $true -and $_.Disabled -eq $false -and $_.Lockout -eq $true } |
+    Select-Object Name, Lockout, Disabled, SID
 ```
 
 pro získání seznamu uzamčených účtů podle preferované varianty. Toho jsme dosáhli pomocí dotazu na účty, které mají zápis True pro vlastnost Disabled

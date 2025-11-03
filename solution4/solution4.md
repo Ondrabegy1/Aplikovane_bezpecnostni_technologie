@@ -3,18 +3,18 @@
 Do powershellu zadáme příkaz:
 
 ```
-Get-ItemProperty -Path 'HKCU:\Control Panel\Keyboard' -Name 'InitialKeyboardIndicators'
+Get-ItemProperty -Path 'Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard' -Name 'InitialKeyboardIndicators'
 ```
 
-tím získáme vlastnosti pro klávesnici z registru, přímo konkrétně hodnotu InitialKeyboardIndicators. Tato hodnota indikuje, zda-li jsou klávesy jako NumLock, CapsLock či ScrollLock zapnuty při přihlášení uživatele. Chceme, aby hodnota byla nastavena na 2. Pokud tomu tak není, zadáme příkaz:
+tím získáme vlastnosti pro klávesnici z registru, přímo konkrétně hodnotu InitialKeyboardIndicators. Tato hodnota indikuje, zda-li jsou klávesy jako NumLock, CapsLock či ScrollLock zapnuty při startu. Chceme, aby hodnota byla nastavena na 2. Pokud tomu tak není, zadáme příkaz:
 
 ```
-Set-ItemProperty -Path 'HKCU:\Control Panel\Keyboard' -Name 'InitialKeyboardIndicators' -Value '2'
+Set-ItemProperty -Path 'Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard' -Name 'InitialKeyboardIndicators' -Value '2'
 ```
 
 a pak znovu zadáme předchozí příkaz pro zjištění a oveření této hodnoty.
 
-***Nyní máme nastavené, že klávesa NumLock bude při přihlášení uživatele spuštěna.***
+***Nyní máme nastavené, že klávesa NumLock bude při startu spuštěna.***
 
 ___
 
@@ -30,27 +30,22 @@ Nyní budeme vkládat hodnoty do podklíče. Pokud neznáme naše hodnoty, kter�
 
 ```
 #Jméno uživatelského účtu
-
 $user = $env:USERNAME
 $user
 
 #Jméno počítače
-
 $computer = $env:COMPUTERNAME
 $computer
 
 #Aktuální datum
-
 $date = (Get-Date).ToString('yyyy-MM-dd HH:mm:ss')
 $date
 
 #Verze powershellu
-
 $psver = $PSVersionTable.PSVersion.ToString()
 $psver
 
 #Příkazy pro vložení všech hodnot do podklíče Hrátky s PowerShellem
-
 New-ItemProperty -Path 'HKCU:\Hrátky s PowerShellem' -Name 'UserName'      -PropertyType String -Value $user   -Force
 New-ItemProperty -Path 'HKCU:\Hrátky s PowerShellem' -Name 'ComputerName'  -PropertyType String -Value $computer -Force
 New-ItemProperty -Path 'HKCU:\Hrátky s PowerShellem' -Name 'DateSaved'     -PropertyType String -Value $date   -Force
