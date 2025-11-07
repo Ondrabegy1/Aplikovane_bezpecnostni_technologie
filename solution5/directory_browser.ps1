@@ -1,5 +1,3 @@
-# .\DirectoryBrowser.ps1 pro spuštění skriptu v PowerShellu
-
 param(
     [string]$StartPath = (Get-Location).Path
 )

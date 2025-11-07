@@ -12,13 +12,13 @@ tím zjistíme cestu k aktuálnímu profilu. Pokud daný soubor neexistuje, zad�
 New-Item -Path $PROFILE -ItemType File -Force
 ```
 
-tím se nám vytvoří soubor Microsoft.PowerShell_profile.ps1. Následně zadáme:
+tím se nám vytvoří soubor powershell_profile.ps1. Následně zadáme:
 
 ```
 notepad $PROFILE
 ```
 
-tím se nám otevře soubor Microsoft.PowerShell_profile.ps1 v poznámkovém bloku. Do otevřeného souboru zadáme:
+tím se nám otevře soubor powershell_profile.ps1 v poznámkovém bloku. Do otevřeného souboru zadáme:
 
 ```
 #Zobrazení informací po startu
@@ -49,10 +49,10 @@ Get-Alias np, ct
 a jestli je všechno v pořádku, nyní převedeme dané aliasy na objekt a uložíme je v souboru JSON. To uděláme zadáním:
 
 ```
-Get-Alias np, ct | Select-Object Name, Definition | ConvertTo-Json | Out-File "$env:USERPROFILE\aliasy.json"
+Get-Alias np, ct | Select-Object Name, Definition | ConvertTo-Json | Out-File "$env:USERPROFILE\aliases.json"
 ```
 
-Nyní se nám vytvořil JSON soubor s názvem aliasy.json s cestou C:\Users\<uživatel>\. Nyní aliasy smažeme v powershellu pomocí příkazu:
+Nyní se nám vytvořil JSON soubor s názvem aliases.json s cestou C:\Users\<uživatel>\. Nyní aliasy smažeme v powershellu pomocí příkazu:
 
 ```
 Remove-Item Alias:np
@@ -65,10 +65,10 @@ pro ověření, že jsou smazány zadáme:
 Get-Alias np, ct
 ```
 
-Pokud jsou opravdu smazány, nyní je obnovíme z JSON souboru aliasy.json pomocí:
+Pokud jsou opravdu smazány, nyní je obnovíme z JSON souboru aliases.json pomocí:
 
 ```
-$aliasy = Get-Content "$env:USERPROFILE\aliasy.json" | ConvertFrom-Json
+$aliasy = Get-Content "$env:USERPROFILE\aliases.json" | ConvertFrom-Json
 foreach ($a in $aliasy) {
     New-Alias -Name $a.Name -Value $a.Definition
 }

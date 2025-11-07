@@ -2,10 +2,10 @@
 
 ### Textové rozhraní vypíše očíslovaný seznam adresářů, přičemž stiskem odpovídajícího čísla přejdu do vybraného adresáře. Stiskem klávesy U přejdu v adresářové struktuře o úroveň výš. Stiskem klávesy Q se program ukončí.
 
-Veškerý skript pro interaktivní textové rozhraní se nachází v souboru DirectoryBroswer.ps1. Pro spuštění souboru zadejte aktuální cestu adresáře, ve kterém se nachází daný skript a zadejte:
+Veškerý skript pro interaktivní textové rozhraní se nachází v souboru directory_broswer.ps1. Pro spuštění souboru zadejte aktuální cestu adresáře, ve kterém se nachází daný skript a zadejte:
 
 ```
-.\DirectoryBrowser.ps1
+.\directory_browser.ps1
 ```
 
 a tím se daný skript spustí.
