@@ -2,6 +2,18 @@ param(
     [string]$StartPath = (Get-Location).Path
 )
 
+function Format-Size {
+    param([long]$Bytes)
+    if ($null -eq $Bytes) { return "" }
+    if ($Bytes -lt 1024) { return "$Bytes B" }
+    $kb = $Bytes / 1KB
+    if ($kb -lt 1024) { return "{0:N2} KB" -f $kb }
+    $mb = $Bytes / 1MB
+    if ($mb -lt 1024) { return "{0:N2} MB" -f $mb }
+    $gb = $Bytes / 1GB
+    return "{0:N2} GB" -f $gb
+}
+
 function Get-FileCount {
     param([string]$Path)
     try {
@@ -10,6 +22,25 @@ function Get-FileCount {
     } catch {
         return 0
     }
+}
+
+function Get-MinMaxFiles {
+    param([string]$Path)
+    try {
+        $files = Get-ChildItem -LiteralPath $Path -File -Force -ErrorAction Stop
+    } catch {
+        $files = @()
+    }
+
+    if ($files.Count -eq 0) {
+        return @{ Min = $null; Max = $null }
+    }
+
+    $sorted = $files | Sort-Object Length
+    $min = $sorted | Select-Object -First 1
+    $max = $sorted | Select-Object -Last 1
+
+    return @{ Min = $min; Max = $max }
 }
 
 $current = (Get-Item -LiteralPath $StartPath -ErrorAction SilentlyContinue)
@@ -28,6 +59,26 @@ while ($true) {
     Write-Host "Počet souborů v aktuálním adresáři: $currentFileCount" -ForegroundColor Green
     Write-Host ""
 
+    $minmax = Get-MinMaxFiles -Path $current.FullName
+    if ($null -eq $minmax.Min -and $null -eq $minmax.Max) {
+        Write-Host "V aktuálním adresáři nejsou žádné soubory." -ForegroundColor DarkGray
+    } else {
+        if ($minmax.Min) {
+            $minText = "{0} ({1})" -f $minmax.Min.Name, (Format-Size $minmax.Min.Length)
+            Write-Host "Nejmenší soubor: $minText" -ForegroundColor Green
+        } else {
+            Write-Host "Nejmenší soubor: (žádný)" -ForegroundColor DarkGray
+        }
+        if ($minmax.Max) {
+            $maxText = "{0} ({1})" -f $minmax.Max.Name, (Format-Size $minmax.Max.Length)
+            Write-Host "Největší soubor: $maxText" -ForegroundColor Magenta
+        } else {
+            Write-Host "Největší soubor: (žádný)" -ForegroundColor DarkGray
+        }
+    }
+
+    Write-Host ""
+
     try {
         $dirs = Get-ChildItem -LiteralPath $current.FullName -Directory -Force | Sort-Object Name
     } catch {
@@ -37,34 +88,6 @@ while ($true) {
     if ($dirs.Count -eq 0) {
         Write-Host "Žádné podsložky v tomto adresáři." -ForegroundColor DarkGray
     } else {
-        $summary = @()
-        foreach ($d in $dirs) {
-            $count = Get-FileCount -Path $d.FullName
-            $summary += [PSCustomObject]@{
-                Name  = $d.Name
-                Path  = $d.FullName
-                Count = $count
-            }
-        }
-
-        $minCount = ($summary | Measure-Object -Property Count -Minimum).Minimum
-        $maxCount = ($summary | Measure-Object -Property Count -Maximum).Maximum
-
-        $minDirs = $summary | Where-Object { $_.Count -eq $minCount }
-        $maxDirs = $summary | Where-Object { $_.Count -eq $maxCount }
-
-        Write-Host "Nejmenší podsložka(y) podle počtu souborů (zobrazeny NÁZVY, bez počtu):" -ForegroundColor Green
-        foreach ($m in $minDirs) {
-            Write-Host "  - $($m.Name)"
-        }
-
-        Write-Host ""
-        Write-Host "Největší podsložka(y) podle počtu souborů (zobrazeny NÁZVY, bez počtu):" -ForegroundColor Magenta
-        foreach ($M in $maxDirs) {
-            Write-Host "  - $($M.Name)"
-        }
-
-        Write-Host ""
         Write-Host "Seznam podsložek (pro volbu čísla):"
         $index = 1
         foreach ($d in $dirs) {
