@@ -67,5 +67,5 @@ while ($true) {
         }
     }
 
-    Start-Sleep -Seconds 2
+    Start-Sleep -Seconds 20
 }
