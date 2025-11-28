@@ -1,10 +1,11 @@
 ### Vytvořte skript, který bude pravidelně (například každých 20 sekund) monitorovat obsah schránky (clipboardu). Pokud zjistí, že schránka obsahuje vybrané klíčové slovo, např. "password" nebo "token", tak její obsah vypíše do terminálu. Nalezené klíčové slovo ve výpisu barevně zvýrazněte. Pokud nedošlo ke změně obsahu clipboardu, tak už není třeba výpis opakovat.
 
-Vytvoříme si skript pro monitoring obsahu clipboardu (viz. script_windows.ps1). Pro ověření funkčnosti ho spustíme pomocí příkazu:
+Vytvoříme si skript pro monitoring obsahu clipboardu (viz. script_keylogger.ps1). Pro ověření funkčnosti ho spustíme pomocí příkazu:
 
 ```
 .\script_keylogger.ps1
-``` 
+```
+
 tím získáme každých 20 sekund obsah clipboardu, pokud je jeho obsahem výraz "password" nebo "token" (case insensitive). Toto heslo se nám následně vypíše i s časem záznamu. Heslo nebo token se vypíše jen jednou, dokud nedojde ke změně clipboardu.
 
 ***Nyní máme v konzoli každých 20 sekund vypsaný clipboard, je-li jeho obsahem "token" nebo "password".***
