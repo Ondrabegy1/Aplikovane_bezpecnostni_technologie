@@ -1,0 +1,15 @@
+1. Jsme na stránce File Upload v DVWA a máme nastavenou security na HIGH. Víme, že server povolí pouze obrázky s příponou .jpg nebo .png. Naším cílem je nahrát obrázek, který obsahuje PHP kód, a poté jej spustit pomocí Local File Inclusion.
+
+2. Nejprve si v Linuxu připravíme 1x1 pixelový obrázek (JPEG). V příkazovém řádku spustíme: convert -size 1x1 canvas:white obrazek.jpg. Tím jsme vytvořili obrázek o velikosti 1x1 pixel s bílou barvou.
+
+3. Do tohoto obrázku vložíme PHP kód pomocí ExifTool. V cmd zadáme: exiftool -DocumentName="<?php phpinfo(); __halt_compiler(); ?>" obrazek.jpg. Tento příkaz přidá do EXIF tagu DocumentName PHP kód. Funkce __halt_compiler(); zajistí, že zbytek obrázku nebude interpretován jako PHP.
+
+4. Obrázek obrazek.jpg nahrajeme na DVWA přes File Upload. Server upload akceptuje, protože kontroluje pouze příponu a základní strukturu obrázku.
+
+5. Využijeme zranitelnost Local File Inclusion. Do URL zadáme:
+
+http://localhost/dvwa/vulnerabilities/fi/?page=file1.php%0A/../../../hackable/uploads/obrazek.jpg
+
+Použití %0A oddělí načítání souborů a server includne náš obrázek jako PHP.
+
+7. Server spustí kód z EXIF dat a zobrazí výsledek funkce phpinfo() na stránce.
